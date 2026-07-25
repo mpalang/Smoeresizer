@@ -43,6 +43,7 @@
 build/
 Build/
 build-*/
+out/
 
 # CMake generated files
 CMakeFiles/
@@ -70,3 +71,6 @@ Testing/
 
 # visual studio community
 .vs/
+
+# Qt
+.qt/
