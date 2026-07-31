@@ -71,6 +71,7 @@ Testing/
 
 # visual studio community
 .vs/
+.vscode/
 
 # Qt
 .qt/
