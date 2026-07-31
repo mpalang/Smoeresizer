@@ -1,10 +1,12 @@
 ﻿#pragma once
 #include <QMainWindow>
-#include <QPushButton>
+#include <QHash>
 #include <QAudioSink>
 #include <QAudioFormat>
 #include <QAudioDevice>
 #include "audiosource.h"
+#include "widgets.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -13,15 +15,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
 
-private slots:
-    void onButtonClicked();
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
 private:
-    QPushButton* m_button;
+    QHash<quint32, Key*> m_keyBindings;
     QAudioSink* m_audioSink = nullptr;
     AudioSource* m_audioSource = nullptr;
-    bool m_playing = false;
 
-    QAudioFormat m_format;   // <-- added
-    QAudioDevice m_device;   // <-- added
+    void setupAudio();
+    void setupKeyboard();
+
 };
