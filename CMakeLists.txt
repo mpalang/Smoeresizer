@@ -22,6 +22,12 @@ set(SOURCES
     src/gui/mainwindow.h
     src/gui/widgets.cpp
     src/gui/widgets.h
+    src/gui/panels/oscilloscope.cpp
+    src/gui/panels/oscilloscope.h
+    src/gui/panels/oscipanel.cpp
+    src/gui/panels/oscipanel.h
+    src/gui/panels/effectpanel.cpp
+    src/gui/panels/effectpanel.h
     src/sound_engine/oscillator.cpp
     src/sound_engine/oscillator.h
     src/sound_engine/note.h
@@ -38,6 +44,7 @@ add_executable(Smoeresizer ${SOURCES})
 target_include_directories(Smoeresizer PRIVATE
     src
     src/gui
+    src/gui/panels
     src/sound_engine
     src/audio
 )

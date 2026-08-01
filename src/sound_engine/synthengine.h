@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "voice.h"
+#include "oscillator.h"
 
 class SynthEngine
 {
@@ -12,6 +13,7 @@ public:
 
     // fills buffer with the mix of all active voices
     void render(std::vector<float>& buffer);
+    void setWaveform(Oscillator::Waveforms w);
 
 private:
     std::vector<Voice> m_voices;

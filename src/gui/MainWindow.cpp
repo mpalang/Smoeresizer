@@ -1,10 +1,14 @@
 ﻿#include "mainwindow.h"
 #include "note.h"
 #include "widgets.h"
+#include "effectpanel.h"
+#include "oscipanel.h"
+#include "oscilloscope.h"
 #include <QWidget>
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QKeyEvent>
 #include <QMediaDevices>
 
@@ -12,11 +16,11 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
-    setWindowTitle("My Synth");
+    setWindowTitle("Smoeresizer");
     resize(400, 300);
 
     setupAudio();
-    setupKeyboard();
+    create_ui();
 
 }
 
@@ -39,14 +43,34 @@ void MainWindow::setupAudio()
     m_audioSink->start(m_audioSource);
 }
 
-void MainWindow::setupKeyboard()
+void MainWindow::create_ui()
 {
-        auto* central = new QWidget(this);
+    // Create Layout:
+    auto* central = new QWidget(this);
     setCentralWidget(central);
-    auto* outerLayout = new QVBoxLayout(central);
+
+    auto* outerLayout = new QHBoxLayout(central);
+
+    auto* leftLayout = new QVBoxLayout();
+    outerLayout->addLayout(leftLayout);
+    auto* middleLayout = new QVBoxLayout();
+    outerLayout->addLayout(middleLayout);
+    auto* rightLayout = new QVBoxLayout();
+    outerLayout->addLayout(rightLayout);
+
+    // Left Panel
+    auto* oscillatorPanel = new OscillatorPanel();
+    leftLayout->addWidget(oscillatorPanel);
+    connect(oscillatorPanel, &OscillatorPanel::waveformChanged,
+        this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
+
+    // Middle Panel
+    auto* oscilloscope = new Oscilloscope();
+    m_audioSource->setOscilloscope(oscilloscope);
+    middleLayout->addWidget(oscilloscope);
 
     //create keys
-    auto* keyboardFrame = new QFrame(central);
+    auto* keyboardFrame = new QFrame();
     keyboardFrame->setFrameShape(QFrame::StyledPanel);
 
     QList<Key*> blackKeys;
@@ -67,17 +91,19 @@ void MainWindow::setupKeyboard()
             connect(key, &Key::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
             connect(key, &Key::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
         }
-
-        // keyLayout->addWidget(key);
         m_keyBindings.insert(kBindings[i], key);
         ++i;
+
     }
     for (Key* k : blackKeys)
         k->raise();
-
     keyboardFrame->setFixedSize(static_cast<int>(position) + 40, 200);
-    outerLayout->addWidget(keyboardFrame);
-    outerLayout->addStretch();
+    middleLayout->addWidget(keyboardFrame);
+    middleLayout->addStretch();
+
+    // Right Panel
+    auto* effectPanel2 = new EffectPanel();
+    rightLayout->addWidget(effectPanel2);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

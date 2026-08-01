@@ -7,6 +7,12 @@ SynthEngine::SynthEngine(double sampleRate, int maxVoices)
 {
 }
 
+void SynthEngine::setWaveform(Oscillator::Waveforms w)
+{
+    for (auto& v : m_voices)
+        v.setWaveform(w);
+}
+
 void SynthEngine::noteOn(double frequency)
 {
     for (auto& v : m_voices) {

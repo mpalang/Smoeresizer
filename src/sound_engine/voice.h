@@ -12,7 +12,8 @@ public:
     double frequency() const;
 
     void addTo(float* buffer, int numFrames); // accumulates into buffer
-
+    void setWaveform(Oscillator::Waveforms w){m_oscillator.setWaveform(w);}
+    
 private:
     Oscillator m_oscillator;
     bool m_active = false;

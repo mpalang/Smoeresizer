@@ -12,13 +12,13 @@ void Voice::noteOn(double frequency)
     m_oscillator.setFrequency(frequency);
     m_active = true;
     m_target = 1.0f;
-    m_step = 1.0f / (0.005f * 44100.0f);   // 5ms ramp
+    m_step = 1.0f / (0.001f * 44100.0f);   // 1ms ramp
 }
 
 void Voice::noteOff()
 {   
     m_target = 0.0f;
-    m_step = 1.0f / (0.005f * 44100.0f);
+    m_step = 1.0f / (0.001f * 44100.0f);
 }
 
 bool Voice::isActive() const

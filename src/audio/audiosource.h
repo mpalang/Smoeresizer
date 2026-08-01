@@ -2,6 +2,7 @@
 #include <QIODevice>
 #include <vector>
 #include "synthengine.h"
+#include "oscilloscope.h"
 
 class AudioSource : public QIODevice
 {
@@ -21,7 +22,12 @@ public:
     bool isSequential() const override { return true; }
     qint64 bytesAvailable() const override; 
 
+    void setOscilloscope(Oscilloscope* scope) { m_view = scope; }
+    void setWaveform(Oscillator::Waveforms w) { m_engine.setWaveform(w); }
+
 private:
     SynthEngine m_engine;
     std::vector<float> m_buffer;
+
+    Oscilloscope* m_view = nullptr;
 };

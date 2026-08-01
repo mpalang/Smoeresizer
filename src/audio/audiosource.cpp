@@ -38,6 +38,9 @@ qint64 AudioSource::readData(char* data, qint64 maxlen)
 
     m_engine.render(m_buffer);
 
+    if (m_view)
+        m_view->pushSamples(m_buffer.data(), numFrames);
+
     // ---- effects go here: operate on m_buffer before conversion ----
 
     qint16* out = reinterpret_cast<qint16*>(data);
