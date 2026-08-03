@@ -59,9 +59,14 @@ void MainWindow::create_ui()
     outerLayout->addLayout(rightLayout);
 
     // Left Panel
-    auto* oscillatorPanel = new OscillatorPanel();
-    leftLayout->addWidget(oscillatorPanel);
-    connect(oscillatorPanel, &OscillatorPanel::waveformChanged,
+    auto* oscillatorPanel1 = new OscillatorPanel();
+    leftLayout->addWidget(oscillatorPanel1);
+    connect(oscillatorPanel1, &OscillatorPanel::waveformChanged,
+        this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
+
+    auto* oscillatorPanel2 = new OscillatorPanel();
+    leftLayout->addWidget(oscillatorPanel2);
+    connect(oscillatorPanel2, &OscillatorPanel::waveformChanged,
         this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
 
     // Middle Panel

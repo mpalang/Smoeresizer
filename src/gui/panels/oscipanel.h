@@ -17,13 +17,13 @@ public:
 
 signals:
     void waveformChanged(Oscillator::Waveforms waveform);
-    void distortionChanged(int percent);
-    void delayChanged(int percent);
-    void vibratoChanged(int percent);
+    void attackChanged(int percent);
+    void decayChanged(int percent);
+    void releaseChanged(int percent);
 
 private:
     QComboBox* m_waveform = nullptr;
-    QSpinBox* m_distortion = nullptr;
-    QSpinBox* m_delay = nullptr;
-    QSpinBox* m_vibrato = nullptr;
+    QSpinBox* m_attack = nullptr;
+    QSpinBox* m_decay = nullptr;
+    QSpinBox* m_release = nullptr;
 };
