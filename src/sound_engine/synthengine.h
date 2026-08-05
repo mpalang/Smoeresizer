@@ -11,6 +11,8 @@ public:
     void noteOn(double frequency);
     void noteOff(double frequency);
 
+    int activeVoices() const;
+
     // fills buffer with the mix of all active voices
     void render(std::vector<float>& buffer);
     void setWaveform(Oscillator::Waveforms w);

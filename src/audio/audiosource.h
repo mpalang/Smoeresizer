@@ -25,6 +25,8 @@ public:
     void setOscilloscope(Oscilloscope* scope) { m_view = scope; }
     void setWaveform(Oscillator::Waveforms w) { m_engine.setWaveform(w); }
 
+    int activeVoices() const { return m_engine.activeVoices(); }
+
 private:
     SynthEngine m_engine;
     std::vector<float> m_buffer;

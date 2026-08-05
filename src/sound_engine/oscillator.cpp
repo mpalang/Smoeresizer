@@ -1,5 +1,6 @@
-#include <cmath>
 #include "oscillator.h"
+#include <cmath>
+
 
 namespace {
     constexpr double kPi = 3.1415926535897932384626433; // avoid M_PI (not standard on MSVC)
@@ -12,11 +13,16 @@ Oscillator::Oscillator(double sampleRate) : m_sampleRate(sampleRate)
 
 void Oscillator::setFrequency(double freqHz)
 {
-    m_frequency = freqHz;
+    m_frequency = freqHz * std::pow(2.0, m_octave);
 }
 void Oscillator::setWaveform(Waveforms w)
 {
     m_waveform = w;
+}
+
+void Oscillator::setOctave(int octave)
+{
+    m_octave = octave;
 }
 
 double Oscillator::nextSample()

@@ -28,6 +28,8 @@ set(SOURCES
     src/gui/panels/oscipanel.h
     src/gui/panels/effectpanel.cpp
     src/gui/panels/effectpanel.h
+    src/gui/panels/keyboard.cpp
+    src/gui/panels/keyboard.h
     src/sound_engine/oscillator.cpp
     src/sound_engine/oscillator.h
     src/sound_engine/note.h

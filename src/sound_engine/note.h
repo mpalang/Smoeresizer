@@ -31,28 +31,3 @@ inline const std::vector<Note> kNotes = {
     { "f#", 739.9888 },
     { "g", 783.9909 },
 };
-
-// binding order matches kNotes order
-// Windows scan codes — physical positions, QWERTZ labels for reference
-static const quint32 kBindings[] = {
-    0x1E, // A: C
-    0x11, // W: C#
-    0x1F, // S: D
-    0x12, // E: D#
-    0x20, // D: E
-    0x21, // F: F
-    0x14, // T: F#
-    0x22, // G: G
-    0x15, // Z: G#
-    0x23, // H: A
-    0x16, // U: A#
-    0x24, // J: B
-    0x25, //K: c
-    0x18, //O: c#
-    0x26, //L: d
-    0x19, //P: d#
-    0x27, //Ö: e
-    0x28, //Ä: f
-    0x1B, //+: f#
-    0x2B //#: g
-};

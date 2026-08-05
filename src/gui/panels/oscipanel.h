@@ -1,29 +1,31 @@
 #pragma once
 
 #include <QWidget>
-#include <QSpinBox>
 
 #include "oscillator.h"
 
 class QSpinBox;
 class QComboBox;
+class QDoubleSpinBox;
 
 class OscillatorPanel : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit OscillatorPanel(QWidget* parent = nullptr);
+    explicit OscillatorPanel(const QString& name, QWidget* parent = nullptr);
 
 signals:
     void waveformChanged(Oscillator::Waveforms waveform);
-    void attackChanged(int percent);
-    void decayChanged(int percent);
-    void releaseChanged(int percent);
+    void amplitudeChanged(int percent);
+    void octaveChanged(int octave);
+    void detuneChanged(int cents);
 
 private:
+    QString m_name;
+    QSpinBox* m_amplitude = nullptr;
+    QSpinBox* m_octave = nullptr;
+    QSpinBox* m_detune = nullptr;
     QComboBox* m_waveform = nullptr;
-    QSpinBox* m_attack = nullptr;
-    QSpinBox* m_decay = nullptr;
-    QSpinBox* m_release = nullptr;
+
 };

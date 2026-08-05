@@ -7,6 +7,15 @@ SynthEngine::SynthEngine(double sampleRate, int maxVoices)
 {
 }
 
+int SynthEngine::activeVoices() const
+{
+    int n = 0;
+    for (const auto& v : m_voices)
+        if (v.isActive())
+            ++n;
+    return n;
+}
+
 void SynthEngine::setWaveform(Oscillator::Waveforms w)
 {
     for (auto& v : m_voices)

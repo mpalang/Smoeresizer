@@ -12,12 +12,15 @@ public:
     Waveforms waveform() const;
 
     void setFrequency(double freqHz);
+    void setOctave(int octave);
+
     double nextSample(); // returns value in [-1, 1]
 
 private:
     double m_sampleRate;
     double m_frequency = 440.0;
     double m_phase = 0.0;
+    int m_octave = 0;
 
     Waveforms m_waveform = Waveforms::Sine;
 };

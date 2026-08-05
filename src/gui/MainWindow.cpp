@@ -1,26 +1,28 @@
 ﻿#include "mainwindow.h"
-#include "note.h"
-#include "widgets.h"
+
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QMediaDevices>
+#include <QStatusBar>
+#include <QLabel>
+#include <QTimer>
+
 #include "effectpanel.h"
 #include "oscipanel.h"
 #include "oscilloscope.h"
-#include <QWidget>
-#include <QFrame>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QKeyEvent>
-#include <QMediaDevices>
-
+#include "keyboard.h"
+#include "audiosource.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
     setWindowTitle("Smoeresizer");
-    resize(400, 300);
+    resize(450, 350);
 
     setupAudio();
-    create_ui();
+    createUi();
+    setupStatusBar();
 
 }
 
@@ -43,7 +45,7 @@ void MainWindow::setupAudio()
     m_audioSink->start(m_audioSource);
 }
 
-void MainWindow::create_ui()
+void MainWindow::createUi()
 {
     // Create Layout:
     auto* central = new QWidget(this);
@@ -51,6 +53,7 @@ void MainWindow::create_ui()
 
     auto* outerLayout = new QHBoxLayout(central);
 
+    // Create three vertical layouts for left, middle, and right panels
     auto* leftLayout = new QVBoxLayout();
     outerLayout->addLayout(leftLayout);
     auto* middleLayout = new QVBoxLayout();
@@ -59,12 +62,12 @@ void MainWindow::create_ui()
     outerLayout->addLayout(rightLayout);
 
     // Left Panel
-    auto* oscillatorPanel1 = new OscillatorPanel();
+    auto* oscillatorPanel1 = new OscillatorPanel("Osci1");
     leftLayout->addWidget(oscillatorPanel1);
     connect(oscillatorPanel1, &OscillatorPanel::waveformChanged,
         this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
 
-    auto* oscillatorPanel2 = new OscillatorPanel();
+    auto* oscillatorPanel2 = new OscillatorPanel("Osci2");
     leftLayout->addWidget(oscillatorPanel2);
     connect(oscillatorPanel2, &OscillatorPanel::waveformChanged,
         this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
@@ -73,66 +76,41 @@ void MainWindow::create_ui()
     auto* oscilloscope = new Oscilloscope();
     m_audioSource->setOscilloscope(oscilloscope);
     middleLayout->addWidget(oscilloscope);
+    
+    auto* keyboard = new Keyboard();
+    middleLayout->addWidget(keyboard);
+    keyboard->setFocus();
 
-    //create keys
-    auto* keyboardFrame = new QFrame();
-    keyboardFrame->setFrameShape(QFrame::StyledPanel);
-
-    QList<Key*> blackKeys;
-    float position = - WhiteKey::kWidth;
-    int i = 0;
-    for (const auto& note : kNotes) {
-        Key* key = nullptr;
-        if (note.name.contains("#")){
-            key = new BlackKey(note, keyboardFrame);
-            key->move(position + WhiteKey::kWidth - BlackKey::kWidth/2, 0);
-            blackKeys.append(key);
-            connect(key, &Key::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
-            connect(key, &Key::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
-        } else {
-            position = position + WhiteKey::kWidth;
-            key = new WhiteKey(note, keyboardFrame);
-            key->move(position, 0);
-            connect(key, &Key::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
-            connect(key, &Key::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
-        }
-        m_keyBindings.insert(kBindings[i], key);
-        ++i;
-
-    }
-    for (Key* k : blackKeys)
-        k->raise();
-    keyboardFrame->setFixedSize(static_cast<int>(position) + 40, 200);
-    middleLayout->addWidget(keyboardFrame);
-    middleLayout->addStretch();
+    connect(keyboard, &Keyboard::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
+    connect(keyboard, &Keyboard::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
 
     // Right Panel
     auto* effectPanel2 = new EffectPanel();
     rightLayout->addWidget(effectPanel2);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* event)
+void MainWindow::setupStatusBar()
 {
-    if (event->isAutoRepeat())
-        return;
+    m_deviceLabel = new QLabel();
+    m_latencyLabel = new QLabel();
 
-    if (Key* key = m_keyBindings.value(event->nativeScanCode(), nullptr)) {
-        key->setDown(true);
-        emit key->pressed();
-        return;
-    }
-    QMainWindow::keyPressEvent(event);
+    statusBar()->addWidget(m_deviceLabel);
+    statusBar()->addPermanentWidget(m_latencyLabel);
+
+    m_deviceLabel->setText(QMediaDevices::defaultAudioOutput().description());
+
+    updateStatus();
+
+    auto* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateStatus);
+    timer->start(500);
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent* event)
+void MainWindow::updateStatus()
 {
-    if (event->isAutoRepeat())
-        return;
+    const int bytes = m_audioSink->bufferSize();
+    const double ms = bytes / 2.0 / 44100.0 * 1000.0;
 
-    if (Key* key = m_keyBindings.value(event->nativeScanCode(), nullptr)) {
-        key->setDown(false);
-        emit key->released();
-        return;
-    }
-    QMainWindow::keyReleaseEvent(event);
+    m_latencyLabel->setText(
+        QString("Voices: %1").arg(m_audioSource->activeVoices()));
 }

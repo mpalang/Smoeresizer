@@ -1,12 +1,10 @@
 ﻿#pragma once
 #include <QMainWindow>
-#include <QHash>
 #include <QAudioSink>
 #include <QAudioFormat>
 #include <QAudioDevice>
-#include "audiosource.h"
-#include "widgets.h"
 
+class AudioSource;
 
 class MainWindow : public QMainWindow
 {
@@ -15,16 +13,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
 
-protected:
-    void keyPressEvent(QKeyEvent* event) override;
-    void keyReleaseEvent(QKeyEvent* event) override;
-
 private:
-    QHash<quint32, Key*> m_keyBindings;
     QAudioSink* m_audioSink = nullptr;
     AudioSource* m_audioSource = nullptr;
-
+    
+    void setupStatusBar();
+    void updateStatus();
     void setupAudio();
-    void create_ui();
+    void createUi();
+
+    QLabel* m_latencyLabel = nullptr;
+    QLabel* m_deviceLabel = nullptr;
 
 };
