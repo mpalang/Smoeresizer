@@ -2,31 +2,17 @@
 #include <algorithm>
 #include <cmath>
 
-SynthEngine::SynthEngine(double sampleRate, int maxVoices)
-    : m_voices(maxVoices, Voice(sampleRate))
+SynthEngine::SynthEngine(double sampleRate, int maxVoices, size_t numOscillators)
+    : m_voices(maxVoices, Voice(sampleRate, numOscillators)),
+    m_settings(numOscillators)
 {
-}
-
-int SynthEngine::activeVoices() const
-{
-    int n = 0;
-    for (const auto& v : m_voices)
-        if (v.isActive())
-            ++n;
-    return n;
-}
-
-void SynthEngine::setWaveform(Oscillator::Waveforms w)
-{
-    for (auto& v : m_voices)
-        v.setWaveform(w);
 }
 
 void SynthEngine::noteOn(double frequency)
 {
     for (auto& v : m_voices) {
         if (!v.isActive()) {
-            v.noteOn(frequency);
+            v.noteOn(frequency, m_settings);
             return;
         }
     }
@@ -48,5 +34,20 @@ void SynthEngine::render(std::vector<float>& buffer)
     std::fill(buffer.begin(), buffer.end(), 0.0f);
 
     for (auto& v : m_voices)
-        v.addTo(buffer.data(), static_cast<int>(buffer.size()));
+        v.addTo(buffer.data(), static_cast<int>(buffer.size()), m_settings);
+}
+
+int SynthEngine::activeVoices() const
+{
+    int n = 0;
+    for (const auto& v : m_voices)
+        if (v.isActive())
+            ++n;
+    return n;
+}
+
+void SynthEngine::setOscillator(size_t index, const OscillatorSettings& s)
+{
+    if (index < m_settings.size())
+        m_settings[index] = s;
 }

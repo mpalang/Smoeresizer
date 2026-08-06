@@ -1,6 +1,7 @@
 #include "audiosource.h"
 #include <algorithm>
 #include <limits>
+#include "oscilloscope.h"
 
 AudioSource::AudioSource(QObject* parent)
     : QIODevice(parent)

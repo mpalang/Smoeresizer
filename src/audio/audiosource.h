@@ -2,7 +2,8 @@
 #include <QIODevice>
 #include <vector>
 #include "synthengine.h"
-#include "oscilloscope.h"
+
+class Oscilloscope;
 
 class AudioSource : public QIODevice
 {
@@ -23,8 +24,7 @@ public:
     qint64 bytesAvailable() const override; 
 
     void setOscilloscope(Oscilloscope* scope) { m_view = scope; }
-    void setWaveform(Oscillator::Waveforms w) { m_engine.setWaveform(w); }
-
+    void setOscillator(size_t index, const OscillatorSettings& s) {m_engine.setOscillator(index, s);}
     int activeVoices() const { return m_engine.activeVoices(); }
 
 private:

@@ -3,21 +3,18 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QSpinBox>
-#include <QDoubleSpinBox>
 #include <QComboBox>
-
-#include "oscillator.h"
 
 OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
     : QWidget(parent), m_name(name)
 {   
-    int WIDGETWIDTH = 80;
+    int WIDGETWIDTH = 100;
     // Create Widgets
     m_waveform = new QComboBox(this);
-    m_waveform->addItem("Sin",     static_cast<int>(Oscillator::Waveforms::Sine));
-    m_waveform->addItem("Squ",   static_cast<int>(Oscillator::Waveforms::Square));
+    m_waveform->addItem("Sine",     static_cast<int>(Oscillator::Waveforms::Sine));
+    m_waveform->addItem("Square",   static_cast<int>(Oscillator::Waveforms::Square));
     m_waveform->addItem("Saw",      static_cast<int>(Oscillator::Waveforms::Sawtooth));
-    m_waveform->addItem("Tri", static_cast<int>(Oscillator::Waveforms::Triangle));
+    m_waveform->addItem("Triangle", static_cast<int>(Oscillator::Waveforms::Triangle));
     m_waveform->setFixedWidth(WIDGETWIDTH);
 
     m_amplitude = new QSpinBox(this);
@@ -59,10 +56,23 @@ OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
 
 
     // Connect Signals
-    connect(m_waveform, &QComboBox::currentIndexChanged, this, [this](int i) {
-        emit waveformChanged(static_cast<Oscillator::Waveforms>(m_waveform->itemData(i).toInt()));
-    });
-    connect(m_amplitude, &QSpinBox::valueChanged, this, &OscillatorPanel::amplitudeChanged);
-    connect(m_octave, &QSpinBox::valueChanged, this, &OscillatorPanel::octaveChanged);
-    connect(m_detune, &QSpinBox::valueChanged, this, &OscillatorPanel::detuneChanged);
+    connect(m_waveform, &QComboBox::currentIndexChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_amplitude, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_octave, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_detune, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+}
+
+OscillatorSettings OscillatorPanel::currentSettings() const
+{
+    OscillatorSettings s;
+    s.waveform = static_cast<Oscillator::Waveforms>(
+        m_waveform->currentData().toInt());
+    s.octave = m_octave->value();
+    s.amplitude = m_amplitude->value() / 100.0f;
+    return s;
+}
+
+void OscillatorPanel::emitSettings()
+{
+    emit settingsChanged(currentSettings());
 }

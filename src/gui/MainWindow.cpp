@@ -62,15 +62,15 @@ void MainWindow::createUi()
     outerLayout->addLayout(rightLayout);
 
     // Left Panel
-    auto* oscillatorPanel1 = new OscillatorPanel("Osci1");
-    leftLayout->addWidget(oscillatorPanel1);
-    connect(oscillatorPanel1, &OscillatorPanel::waveformChanged,
-        this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
+    auto* osciPanel1 = new OscillatorPanel("Osci1");
+    leftLayout->addWidget(osciPanel1);
+    connect(osciPanel1, &OscillatorPanel::settingsChanged,
+        this, [this](const OscillatorSettings& s) { m_audioSource->setOscillator(0, s); });
 
-    auto* oscillatorPanel2 = new OscillatorPanel("Osci2");
-    leftLayout->addWidget(oscillatorPanel2);
-    connect(oscillatorPanel2, &OscillatorPanel::waveformChanged,
-        this, [this](Oscillator::Waveforms w) { m_audioSource->setWaveform(w); });
+    auto* osciPanel2 = new OscillatorPanel("Osci2");
+    leftLayout->addWidget(osciPanel2);
+    connect(osciPanel2, &OscillatorPanel::settingsChanged,
+        this, [this](const OscillatorSettings& s) { m_audioSource->setOscillator(1, s); });
 
     // Middle Panel
     auto* oscilloscope = new Oscilloscope();

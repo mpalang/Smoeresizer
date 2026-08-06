@@ -13,6 +13,7 @@ public:
 
     void setFrequency(double freqHz);
     void setOctave(int octave);
+    void reset() { m_phase = 0.0; }
 
     double nextSample(); // returns value in [-1, 1]
 
