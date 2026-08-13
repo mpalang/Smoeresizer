@@ -13,7 +13,9 @@ void Voice::noteOn(double frequency, const std::vector<OscillatorSettings>& sett
     m_frequency = frequency;
     for (size_t i = 0; i < m_oscillators.size() && i < settings.size(); ++i){
         m_oscillators[i].reset();
-        m_oscillators[i].setFrequency(frequency * std::pow(2.0, settings[i].octave));
+        m_oscillators[i].setFrequency(frequency);
+        m_oscillators[i].setOctave(settings[i].octave);
+        m_oscillators[i].setDetune(settings[i].detune);
     }
 
 

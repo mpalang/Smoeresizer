@@ -13,6 +13,7 @@
 #include "oscilloscope.h"
 #include "keyboard.h"
 #include "audiosource.h"
+#include "frequencyfilterpanel.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -71,6 +72,10 @@ void MainWindow::createUi()
     leftLayout->addWidget(osciPanel2);
     connect(osciPanel2, &OscillatorPanel::settingsChanged,
         this, [this](const OscillatorSettings& s) { m_audioSource->setOscillator(1, s); });
+
+    auto* filterPanel = new FrequencyFilterPanel();
+    leftLayout->addWidget(filterPanel);
+
 
     // Middle Panel
     auto* oscilloscope = new Oscilloscope();

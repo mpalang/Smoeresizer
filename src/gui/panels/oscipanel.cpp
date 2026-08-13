@@ -53,8 +53,6 @@ OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
     layout->addWidget(new QLabel("Detune", this), 3, 1);
     layout->addWidget(m_detune,                   4, 1);
 
-
-
     // Connect Signals
     connect(m_waveform, &QComboBox::currentIndexChanged, this, &OscillatorPanel::emitSettings);
     connect(m_amplitude, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
@@ -69,6 +67,7 @@ OscillatorSettings OscillatorPanel::currentSettings() const
         m_waveform->currentData().toInt());
     s.octave = m_octave->value();
     s.amplitude = m_amplitude->value() / 100.0f;
+    s.detune = m_detune->value(); //detune in cents.
     return s;
 }
 

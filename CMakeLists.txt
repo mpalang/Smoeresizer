@@ -30,6 +30,8 @@ set(SOURCES
     src/gui/panels/effectpanel.h
     src/gui/panels/keyboard.cpp
     src/gui/panels/keyboard.h
+    src/gui/panels/frequencyfilterpanel.cpp
+    src/gui/panels/frequencyfilterpanel.h
     src/sound_engine/oscillator.cpp
     src/sound_engine/oscillator.h
     src/sound_engine/note.h

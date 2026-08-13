@@ -25,6 +25,11 @@ void Oscillator::setOctave(int octave)
     m_octave = octave;
 }
 
+void Oscillator::setDetune(int detune)
+{
+    m_detune = detune;
+}
+
 double Oscillator::nextSample()
 {   
     double sample = 0.0;
@@ -47,7 +52,7 @@ double Oscillator::nextSample()
             break;
     }
 
-    m_phase += 2 * kPi * m_frequency / m_sampleRate;
+    m_phase += 2 * kPi * (m_frequency * std::pow(2, m_octave + m_detune / 1200.0)) / m_sampleRate;
     if (m_phase >= 2*kPi)
         m_phase -= 2*kPi;
 
