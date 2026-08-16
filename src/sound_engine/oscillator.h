@@ -14,6 +14,7 @@ public:
     void setFrequency(double freqHz);
     void setOctave(int octave);
     void setDetune(int detune);
+    void setAmplitude(int amplitude);
     void reset() { m_phase = 0.0; }
 
     double nextSample(); // returns value in [-1, 1]
@@ -24,6 +25,7 @@ private:
     double m_phase = 0.0;
     double m_detune = 0;
     int m_octave = 0;
+    int m_amplitude = 50; //Amplitude in %
 
     Waveforms m_waveform = Waveforms::Sine;
 };

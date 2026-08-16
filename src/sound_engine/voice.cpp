@@ -43,7 +43,11 @@ void Voice::addTo(float* buffer, int numFrames, const std::vector<OscillatorSett
     
     for (size_t i = 0; i < n; ++i) {
         m_oscillators[i].setWaveform(settings[i].waveform);
-        m_oscillators[i].setFrequency(m_frequency * std::pow(2.0, settings[i].octave));
+        m_oscillators[i].setAmplitude(settings[i].amplitude);
+        m_oscillators[i].setFrequency(m_frequency);
+        m_oscillators[i].setOctave(settings[i].octave);
+        m_oscillators[i].setDetune(settings[i].detune);
+
     }
 
     for (int s = 0; s < numFrames; ++s) {
@@ -54,7 +58,7 @@ void Voice::addTo(float* buffer, int numFrames, const std::vector<OscillatorSett
         
         float mixed = 0.0f;
         for (size_t i = 0; i < n; ++i)
-            mixed += static_cast<float>(m_oscillators[i].nextSample()) * settings[i].amplitude;
+            mixed += static_cast<float>(m_oscillators[i].nextSample());
 
         buffer[s] += mixed * norm * m_gain;
     }

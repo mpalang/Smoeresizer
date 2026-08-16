@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-class QSpinBox;
+class MySpinBox;
 class QComboBox;
 
 struct FrequencyFilterSettings
@@ -24,8 +24,8 @@ signals:
 private:
     FrequencyFilterSettings currentSettings() const;
     void emitSettings();
-    QSpinBox* m_HPfilter = nullptr;
-    QSpinBox* m_LPfilter = nullptr;
+    MySpinBox* m_HPfilter = nullptr;
+    MySpinBox* m_LPfilter = nullptr;
 
 };
 

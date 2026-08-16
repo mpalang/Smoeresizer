@@ -13,11 +13,16 @@ Oscillator::Oscillator(double sampleRate) : m_sampleRate(sampleRate)
 
 void Oscillator::setFrequency(double freqHz)
 {
-    m_frequency = freqHz * std::pow(2.0, m_octave);
+    m_frequency = freqHz;
 }
 void Oscillator::setWaveform(Waveforms w)
 {
     m_waveform = w;
+}
+
+void Oscillator::setAmplitude(int amplitude)
+{
+    m_amplitude = amplitude;
 }
 
 void Oscillator::setOctave(int octave)
@@ -56,5 +61,5 @@ double Oscillator::nextSample()
     if (m_phase >= 2*kPi)
         m_phase -= 2*kPi;
 
-    return sample;
+    return (m_amplitude / 100.0) * sample;
 }

@@ -1,9 +1,8 @@
 #pragma once
 
 #include <QWidget>
-#include <QSpinBox>
 
-class QSpinBox;
+class MySpinBox;
 
 class EffectPanel : public QWidget
 {
@@ -19,8 +18,8 @@ signals:
     void vibratoChanged(int percent);
 
 private:
-    QSpinBox* m_echo = nullptr;
-    QSpinBox* m_distortion = nullptr;
-    QSpinBox* m_delay = nullptr;
-    QSpinBox* m_vibrato = nullptr;
+    MySpinBox* m_echo = nullptr;
+    MySpinBox* m_distortion = nullptr;
+    MySpinBox* m_delay = nullptr;
+    MySpinBox* m_vibrato = nullptr;
 };

@@ -4,7 +4,7 @@
 
 #include "oscillatorsettings.h"
 
-class QSpinBox;
+class MySpinBox;
 class QComboBox;
 
 class OscillatorPanel : public QWidget
@@ -22,9 +22,8 @@ private:
     void emitSettings();
     QString m_name;
     QComboBox* m_waveform = nullptr;
-    QSpinBox* m_amplitude = nullptr;
-    QSpinBox* m_octave = nullptr;
-    QSpinBox* m_detune = nullptr;
-
+    MySpinBox* m_amplitude = nullptr;
+    MySpinBox* m_octave = nullptr;
+    MySpinBox* m_detune = nullptr;
 
 };

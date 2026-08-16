@@ -18,10 +18,15 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Multimedia)
 
 set(SOURCES
     src/main.cpp
+    src/gui/styling.h
+    src/gui/styling.cpp
+
     src/gui/mainwindow.cpp
     src/gui/mainwindow.h
+
     src/gui/widgets.cpp
     src/gui/widgets.h
+
     src/gui/panels/oscilloscope.cpp
     src/gui/panels/oscilloscope.h
     src/gui/panels/oscipanel.cpp
@@ -32,6 +37,9 @@ set(SOURCES
     src/gui/panels/keyboard.h
     src/gui/panels/frequencyfilterpanel.cpp
     src/gui/panels/frequencyfilterpanel.h
+    src/gui/panels/masterpanel.cpp
+    src/gui/panels/masterpanel.h
+
     src/sound_engine/oscillator.cpp
     src/sound_engine/oscillator.h
     src/sound_engine/note.h

@@ -2,37 +2,39 @@
 
 #include <QGridLayout>
 #include <QLabel>
-#include <QSpinBox>
 #include <QComboBox>
+
+#include "widgets.h"
+#include "styling.h"
 
 OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
     : QWidget(parent), m_name(name)
 {   
-    int WIDGETWIDTH = 100;
+    // int WIDGETWIDTH = 100;
     // Create Widgets
     m_waveform = new QComboBox(this);
-    m_waveform->addItem("Sine",     static_cast<int>(Oscillator::Waveforms::Sine));
-    m_waveform->addItem("Square",   static_cast<int>(Oscillator::Waveforms::Square));
-    m_waveform->addItem("Saw",      static_cast<int>(Oscillator::Waveforms::Sawtooth));
-    m_waveform->addItem("Triangle", static_cast<int>(Oscillator::Waveforms::Triangle));
-    m_waveform->setFixedWidth(WIDGETWIDTH);
+    m_waveform->addItem(Styling::makeWaveIcon(Oscillator::Waveforms::Sine), "",     static_cast<int>(Oscillator::Waveforms::Sine));
+    m_waveform->addItem(Styling::makeWaveIcon(Oscillator::Waveforms::Square), "",   static_cast<int>(Oscillator::Waveforms::Square));
+    m_waveform->addItem(Styling::makeWaveIcon(Oscillator::Waveforms::Sawtooth), "",      static_cast<int>(Oscillator::Waveforms::Sawtooth));
+    m_waveform->addItem(Styling::makeWaveIcon(Oscillator::Waveforms::Triangle), "", static_cast<int>(Oscillator::Waveforms::Triangle));
+    // m_waveform->setFixedWidth(WIDGETWIDTH);
 
-    m_amplitude = new QSpinBox(this);
+    m_amplitude = new MySpinBox(this);
     m_amplitude->setRange(0, 100);
     m_amplitude->setValue(50);
     m_amplitude->setSuffix("%");
-    m_amplitude->setFixedWidth(WIDGETWIDTH);
+    // m_amplitude->setFixedWidth(WIDGETWIDTH);
 
-    m_octave = new QSpinBox(this);
+    m_octave = new MySpinBox(this);
     m_octave->setRange(-5, 5);
     m_octave->setValue(0);
-    m_octave->setFixedWidth(WIDGETWIDTH);
+    // m_octave->setFixedWidth(WIDGETWIDTH);
 
-    m_detune = new QSpinBox(this);
+    m_detune = new MySpinBox(this);
     m_detune->setRange(-100, 100);
     m_detune->setValue(0);
     m_detune->setSuffix(" cts");
-    m_detune->setFixedWidth(WIDGETWIDTH);
+    // m_detune->setFixedWidth(WIDGETWIDTH);
 
     // Create Layout
     auto* outer = new QVBoxLayout(this);
@@ -55,9 +57,9 @@ OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
 
     // Connect Signals
     connect(m_waveform, &QComboBox::currentIndexChanged, this, &OscillatorPanel::emitSettings);
-    connect(m_amplitude, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
-    connect(m_octave, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
-    connect(m_detune, &QSpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_amplitude, &MySpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_octave, &MySpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
+    connect(m_detune, &MySpinBox::valueChanged, this, &OscillatorPanel::emitSettings);
 }
 
 OscillatorSettings OscillatorPanel::currentSettings() const
@@ -66,7 +68,7 @@ OscillatorSettings OscillatorPanel::currentSettings() const
     s.waveform = static_cast<Oscillator::Waveforms>(
         m_waveform->currentData().toInt());
     s.octave = m_octave->value();
-    s.amplitude = m_amplitude->value() / 100.0f;
+    s.amplitude = m_amplitude->value();
     s.detune = m_detune->value(); //detune in cents.
     return s;
 }

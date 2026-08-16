@@ -14,6 +14,7 @@
 #include "keyboard.h"
 #include "audiosource.h"
 #include "frequencyfilterpanel.h"
+#include "masterpanel.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -73,9 +74,6 @@ void MainWindow::createUi()
     connect(osciPanel2, &OscillatorPanel::settingsChanged,
         this, [this](const OscillatorSettings& s) { m_audioSource->setOscillator(1, s); });
 
-    auto* filterPanel = new FrequencyFilterPanel();
-    leftLayout->addWidget(filterPanel);
-
 
     // Middle Panel
     auto* oscilloscope = new Oscilloscope();
@@ -85,13 +83,21 @@ void MainWindow::createUi()
     auto* keyboard = new Keyboard();
     middleLayout->addWidget(keyboard);
     keyboard->setFocus();
-
     connect(keyboard, &Keyboard::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
     connect(keyboard, &Keyboard::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
+        
+    auto* masterPanel = new MasterPanel();
+    middleLayout->addWidget(masterPanel);
+    connect(masterPanel, &MasterPanel::settingsChanged,
+        this, [this](const MasterSettings& s) {nullptr; });
 
     // Right Panel
     auto* effectPanel2 = new EffectPanel();
     rightLayout->addWidget(effectPanel2);
+
+    auto* filterPanel = new FrequencyFilterPanel();
+    rightLayout->addWidget(filterPanel);
+
 }
 
 void MainWindow::setupStatusBar()
