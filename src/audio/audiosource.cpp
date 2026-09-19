@@ -1,6 +1,8 @@
 #include "audiosource.h"
+
 #include <algorithm>
 #include <limits>
+
 #include "oscilloscope.h"
 
 AudioSource::AudioSource(QObject* parent)
@@ -38,16 +40,20 @@ qint64 AudioSource::readData(char* data, qint64 maxlen)
         m_buffer.resize(numFrames);
 
     m_engine.render(m_buffer);
+    m_master.process(m_buffer);
+
+    float peak = 0.0f;
+    for (float s : m_buffer)
+        peak = std::max(peak, std::abs(s));
+    for (auto& s : m_buffer)
+        s = std::clamp(s, -0.8f*peak, 0.8f*peak);
 
     if (m_view)
         m_view->pushSamples(m_buffer.data(), numFrames);
 
-    // ---- effects go here: operate on m_buffer before conversion ----
-
     qint16* out = reinterpret_cast<qint16*>(data);
     for (int i = 0; i < numFrames; ++i) {
-        float s = std::clamp(m_buffer[i] * 0.3f, -1.0f, 1.0f);
-        out[i] = static_cast<qint16>(s * 32767.0f);
+        out[i] = static_cast<qint16>(m_buffer[i] * 32767.0f);
     }
 
     return numFrames * static_cast<qint64>(sizeof(qint16));

@@ -1,7 +1,10 @@
 #pragma once
+
 #include <QIODevice>
 #include <vector>
+
 #include "synthengine.h"
+#include "masterprocessor.h"
 
 class Oscilloscope;
 
@@ -27,9 +30,13 @@ public:
     void setOscillator(size_t index, const OscillatorSettings& s) {m_engine.setOscillator(index, s);}
     int activeVoices() const { return m_engine.activeVoices(); }
 
+    void setMasterGain(float g) { m_master.setGain(g); }
+
 private:
     SynthEngine m_engine;
     std::vector<float> m_buffer;
 
     Oscilloscope* m_view = nullptr;
+
+    MasterProcessor m_master;
 };

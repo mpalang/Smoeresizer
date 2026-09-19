@@ -21,6 +21,9 @@ set(SOURCES
     src/gui/styling.h
     src/gui/styling.cpp
 
+    src/utils/fft.h 
+    src/utils/fft.cpp 
+
     src/gui/mainwindow.cpp
     src/gui/mainwindow.h
 
@@ -47,6 +50,9 @@ set(SOURCES
     src/sound_engine/voice.cpp
     src/sound_engine/synthengine.h
     src/sound_engine/synthengine.cpp
+    src/sound_engine/masterprocessor.h
+    src/sound_engine/masterprocessor.cpp
+
     src/audio/audiosource.cpp
     src/audio/audiosource.h
 
@@ -59,6 +65,7 @@ target_include_directories(Smoeresizer PRIVATE
     src/gui/panels
     src/sound_engine
     src/audio
+    src/utils
 )
 
 target_link_libraries(Smoeresizer PRIVATE Qt6::Widgets Qt6::Multimedia)

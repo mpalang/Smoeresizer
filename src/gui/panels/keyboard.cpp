@@ -100,7 +100,7 @@ BlackKey::BlackKey(const Note& note, QWidget* parent)
     }
     for (Key* k : blackKeys)
         k->raise();
-    frame->setFixedSize(position + WhiteKey::kWidth, WhiteKey::kHeight);
+    frame->setFixedSize(position, WhiteKey::kHeight);
     outer->addWidget(frame);
     outer->addStretch();
 

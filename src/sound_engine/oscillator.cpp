@@ -15,6 +15,7 @@ void Oscillator::setFrequency(double freqHz)
 {
     m_frequency = freqHz;
 }
+
 void Oscillator::setWaveform(Waveforms w)
 {
     m_waveform = w;

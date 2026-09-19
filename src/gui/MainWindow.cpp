@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QComboBox>
 #include <QMediaDevices>
 #include <QStatusBar>
 #include <QLabel>
@@ -25,7 +26,6 @@ MainWindow::MainWindow(QWidget* parent)
     setupAudio();
     createUi();
     setupStatusBar();
-
 }
 
 void MainWindow::setupAudio()
@@ -74,30 +74,38 @@ void MainWindow::createUi()
     connect(osciPanel2, &OscillatorPanel::settingsChanged,
         this, [this](const OscillatorSettings& s) { m_audioSource->setOscillator(1, s); });
 
+    auto* filterPanel = new FrequencyFilterPanel();
+    leftLayout->addWidget(filterPanel);
+
 
     // Middle Panel
     auto* oscilloscope = new Oscilloscope();
     m_audioSource->setOscilloscope(oscilloscope);
     middleLayout->addWidget(oscilloscope);
+
+    auto* modeBox = new QComboBox();
+    modeBox->addItem("Waveform", static_cast<int>(Oscilloscope::Mode::Waveform));
+    modeBox->addItem("Spectrum", static_cast<int>(Oscilloscope::Mode::Spectrum));
+    middleLayout->addWidget(modeBox);
+    connect(modeBox, &QComboBox::currentIndexChanged, this, [this, modeBox, oscilloscope](int i) {
+        oscilloscope->setMode(static_cast<Oscilloscope::Mode>(modeBox->itemData(i).toInt()));
+    });
     
+    auto* masterPanel = new MasterPanel();
+    middleLayout->addWidget(masterPanel);
+    connect(masterPanel, &MasterPanel::settingsChanged,
+        this, [this](const MasterSettings& s) { m_audioSource->setMasterGain(s.Volume / 100.0f); });
+
     auto* keyboard = new Keyboard();
     middleLayout->addWidget(keyboard);
     keyboard->setFocus();
     connect(keyboard, &Keyboard::notePressed, this, [this](double f) { m_audioSource->noteOn(f); });
     connect(keyboard, &Keyboard::noteReleased, this, [this](double f) { m_audioSource->noteOff(f); });
-        
-    auto* masterPanel = new MasterPanel();
-    middleLayout->addWidget(masterPanel);
-    connect(masterPanel, &MasterPanel::settingsChanged,
-        this, [this](const MasterSettings& s) {nullptr; });
+
 
     // Right Panel
     auto* effectPanel2 = new EffectPanel();
     rightLayout->addWidget(effectPanel2);
-
-    auto* filterPanel = new FrequencyFilterPanel();
-    rightLayout->addWidget(filterPanel);
-
 }
 
 void MainWindow::setupStatusBar()

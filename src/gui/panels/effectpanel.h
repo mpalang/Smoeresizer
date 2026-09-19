@@ -1,8 +1,27 @@
 #pragma once
 
 #include <QWidget>
+#include <QPushButton>
 
 class MySpinBox;
+
+class EffectWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit EffectWidget(QWidget* parent = nullptr);
+
+
+signals:
+    void intensityChanged(int percent);
+
+private:
+    QPushButton* m_osc1Button = nullptr;
+    QPushButton* m_osc2Button = nullptr;   
+    MySpinBox* m_intensity = nullptr;
+};
+
 
 class EffectPanel : public QWidget
 {

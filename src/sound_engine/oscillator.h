@@ -25,7 +25,7 @@ private:
     double m_phase = 0.0;
     double m_detune = 0;
     int m_octave = 0;
-    int m_amplitude = 50; //Amplitude in %
+    int m_amplitude = 100; //Amplitude in %
 
     Waveforms m_waveform = Waveforms::Sine;
 };

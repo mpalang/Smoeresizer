@@ -36,7 +36,7 @@ QIcon makeWaveIcon(Oscillator::Waveforms w)
     osc.setWaveform(w);
 
     QPainterPath path;
-    for (int x = 0; x < 32; ++x) {
+    for (int x = 0; x < 64; ++x) {
         const double y = 10.0 - osc.nextSample() * 8.0;
         if (x == 0) path.moveTo(x, y);
         else        path.lineTo(x, y);

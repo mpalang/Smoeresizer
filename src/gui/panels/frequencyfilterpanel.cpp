@@ -33,7 +33,7 @@ FrequencyFilterPanel::FrequencyFilterPanel(QWidget* parent)
     outer->addWidget(frame);
 
     auto* layout = new QGridLayout(frame);
-    layout->addWidget(new QLabel("<b> Frequency Filter </b>"), 0, 0); 
+    layout->addWidget(new QLabel("<b> Frequency Filter </b>"), 0, 0, 1, 2); 
     layout->addWidget(new QLabel("Low Pass"), 1, 0);
     layout->addWidget(m_LPfilter,              2, 0);
     layout->addWidget(new QLabel("High Pass", this),  1, 1);
@@ -43,7 +43,6 @@ FrequencyFilterPanel::FrequencyFilterPanel(QWidget* parent)
     // Connect Signals
     connect(m_LPfilter, &MySpinBox::valueChanged, this, &FrequencyFilterPanel::emitSettings);
     connect(m_HPfilter, &MySpinBox::valueChanged, this, &FrequencyFilterPanel::emitSettings);
-
 }
 
 FrequencyFilterSettings FrequencyFilterPanel::currentSettings() const

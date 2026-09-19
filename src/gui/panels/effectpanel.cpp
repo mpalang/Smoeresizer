@@ -5,6 +5,18 @@
 
 #include "widgets.h"
 
+EffectWidget::EffectWidget(QWidget* parent)
+    : QWidget(parent)
+{
+    auto* layout = new QGridLayout(this);
+
+    m_osc1Button = new QPushButton(this);
+    m_osc2Button = new QPushButton(this);
+
+    layout->addWidget(m_osc1Button);
+    layout->addWidget(m_osc2Button);
+}
+
 EffectPanel::EffectPanel(QWidget* parent)
     : QWidget(parent)
 {

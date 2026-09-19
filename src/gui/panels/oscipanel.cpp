@@ -21,7 +21,7 @@ OscillatorPanel::OscillatorPanel(const QString& name, QWidget* parent)
 
     m_amplitude = new MySpinBox(this);
     m_amplitude->setRange(0, 100);
-    m_amplitude->setValue(50);
+    m_amplitude->setValue(100);
     m_amplitude->setSuffix("%");
     // m_amplitude->setFixedWidth(WIDGETWIDTH);
 
